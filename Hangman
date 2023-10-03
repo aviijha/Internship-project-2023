@@ -1,0 +1,88 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class HangmanGame {
+    public static void main(String[] args) {
+        String[] words = {
+            "apple", "banana", "cherry", "orange", "grape",
+            "dog", "cat", "elephant", "lion", "tiger",
+            "car", "bicycle", "bus", "train", "motorcycle",
+            "computer", "keyboard", "mouse", "monitor", "printer",
+            "java", "programming", "language", "code", "developer",
+            "ocean", "beach", "island", "mountain", "forest",
+            "music", "guitar", "piano", "drums", "singer",
+            "book", "author", "library", "novel", "reading",
+            "pizza", "hamburger", "spaghetti", "sushi", "icecream"
+        };
+
+        Random random = new Random();
+        String wordToGuess = words[random.nextInt(words.length)];
+        int maxAttempts = 6;
+        int attempts = 0;
+        char[] guessedLetters = new char[wordToGuess.length()];
+        boolean gameWon = false;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to Hangman!");
+        System.out.println("You have " + maxAttempts + " attempts to guess the word.");
+
+        while (attempts < maxAttempts) {
+            System.out.println("Word: " + displayWord(guessedLetters, wordToGuess));
+            System.out.print("Enter a letter: ");
+            char guess = scanner.next().charAt(0);
+
+            if (isLetterInWord(guess, wordToGuess, guessedLetters)) {
+                System.out.println("Good guess!");
+            } else {
+                System.out.println("Sorry, that letter is not in the word.");
+                attempts++;
+            }
+
+            if (isWordGuessed(guessedLetters, wordToGuess)) {
+                gameWon = true;
+                break;
+            }
+        }
+
+        if (gameWon) {
+            System.out.println("Congratulations! You guessed the word: " + wordToGuess);
+        } else {
+            System.out.println("You ran out of attempts. The word was: " + wordToGuess);
+        }
+
+        scanner.close();
+    }
+
+    static boolean isLetterInWord(char letter, String word, char[] guessedLetters) {
+        boolean found = false;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == letter) {
+                guessedLetters[i] = letter;
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    static boolean isWordGuessed(char[] guessedLetters, String word) {
+        for (char c : guessedLetters) {
+            if (c == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static String displayWord(char[] guessedLetters, String word) {
+        StringBuilder display = new StringBuilder();
+        for (int i = 0; i < word.length(); i++) {
+            if (guessedLetters[i] != 0) {
+                display.append(guessedLetters[i]);
+            } else {
+                display.append("_");
+            }
+            display.append(" ");
+        }
+        return display.toString();
+    }
+}
