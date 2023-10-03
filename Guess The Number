@@ -1,0 +1,46 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class GuessTheNumber {
+    public static void main(String[] args) {
+        while (true) { // Infinite loop
+            // Generate a random number between 1 and 50
+            Random random = new Random();
+            int num = random.nextInt(50) + 1; // Adjusted range to [1, 50]
+
+            // Get user input
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a number between 1 and 50:");
+            int guess = scanner.nextInt();
+
+            // Compare the user's guess to the random number
+            int chances = 5;
+            while (chances > 0) {
+                if (num == guess) {
+                    System.out.println("You won!");
+                    break;
+                } else if (num < guess) {
+                    System.out.println("Your guess is too high. Try again:");
+                } else {
+                    System.out.println("Your guess is too low. Try again:");
+                }
+                guess = scanner.nextInt();
+                chances--;
+                if (chances > 0) {
+                    System.out.println("Chances left: " + chances);
+                }
+            }
+            // If the user runs out of chances, print a message
+            if (chances == 0) {
+                System.out.println("You ran out of chances. The number was " + num);
+            }
+
+            // Ask if the user wants to play again
+            System.out.println("Do you want to play again? (yes/no)");
+            String playAgain = scanner.next().toLowerCase();
+            if (!playAgain.equals("yes")) {
+                break; // Exit the infinite loop if the user doesn't want to play again
+            }
+        }
+    }
+}
